@@ -1,0 +1,12 @@
+Step 1: Design a grid using flexbox and make it responsive.                                 (done)
+
+Step 2: Create any array containing all city names.                                         (done)
+
+Step 3: onClick    
+        hang on page overlay change display block                                           (done)                
+        -> hang on page.  SetTimeout : 2sec display none                                    (done)
+        -> specific city page.  SetTimeout : 1.5sec                                         (done)
+
+
+
+
