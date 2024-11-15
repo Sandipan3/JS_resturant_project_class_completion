@@ -9,4 +9,10 @@ Step 3: onClick
 
 
 
+Date: 14-11-2024
+Todo: Restaurant menu data display.
 
+Step 1: Storing the data in a js file and export it. (done)
+Step 2: Import of the data in cityFood.js (done)
+Step 3: Identify the container where the layout need to be appended. (done)
+Step 4: Designing the layout of the menu items.
