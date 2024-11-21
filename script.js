@@ -30,10 +30,13 @@ CITY_ARRAY.forEach((city) => {
     })
 });
 
-function NavigateHandler(name){
+ function NavigateHandler(name){
     //building query parameter for cityFood.html
     window.location.href=`cityFood.html?city=${encodeURIComponent(name.toLowerCase())}`;
+    
 }
+
+
 
 
 

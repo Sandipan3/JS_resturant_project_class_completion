@@ -1,7 +1,33 @@
 import {deliveryRestaurants} from "./restaurantMenuData.js";
+
+
+const currentLocation = window.location.href;
+const currentURL = new URL(currentLocation);
+// console.log(currentURL);
+const params = new URLSearchParams(currentURL.search);
+// values after question mark
+const city = params.get('city').charAt(0).toUpperCase() + params.get('city').slice(1);
+
+// console.log(currentURL.search);
+// console.log(params);
+console.log(city);
+
+const CITY_NAME = document.querySelector('.deliveryRestaurants-Header-city-name');
+CITY_NAME.textContent=city;
+
+document.querySelector('.city-name').textContent=city;
+
+document.querySelector('.city-name-in-breadcrumb').textContent=city;
+
+
+
+
+
+
 const deliveryRestaurantsContainerEl = document.querySelector(
   ".deliveryRestaurants-container"
 );
+
 
 const displayMenu = () => {
   deliveryRestaurants.forEach((item) => {
@@ -14,9 +40,13 @@ const displayMenu = () => {
     discountContainer.classList.add('discount-container');
 
     const foodImage = document.createElement('img');
+    foodImage.src=item.img;
+    foodImage.alt=item.restaurantName;
     foodImage.classList.add('foodImage');
+    //image added
 
     const deliveryRestaurantsDetails = document.createElement('div');
+  
     deliveryRestaurantsDetails.classList.add('deliveryRestaurants-details');
 
     console.log('deliveryRestaurantsCard', deliveryRestaurantsCard);
@@ -28,9 +58,9 @@ const displayMenu = () => {
     
 
     const discountPercentage = document.createElement('p');
-    
+    discountPercentage.textContent=item.discount;
     discountPercentage.classList.add('discount-percentage');
-
+    // discount added
     discountContainer.appendChild(discountPercentage);
 
 
@@ -47,8 +77,11 @@ const displayMenu = () => {
     deliveryRestaurantsDetails.appendChild(cuisinePrice);
     deliveryRestaurantsDetails.appendChild(time);
 
+    // restaurant name start
     const restaurantName = document.createElement('b');
+    restaurantName.textContent=item.restaurantName;
     restaurantName.classList.add('restaurant-name');
+    // restaurant name ended
 
     const restaurantRatingContainer = document.createElement('div')
     restaurantRatingContainer.classList.add('restaurant-rating-container');
@@ -56,35 +89,52 @@ const displayMenu = () => {
     deliveryRestaurantName.appendChild(restaurantName);
     deliveryRestaurantName.appendChild(restaurantRatingContainer);
 
-
-    const restaurantRating = document.createElement('b')
+    //"restaurant rating started 
+    const restaurantRating = document.createElement('b');
+    restaurantRating.textContent=item.rating;
     restaurantRating.classList.add('restaurant-rating');
-
+    //"restaurant rating ended
+    
+    // star-icon started
     const starIcon = document.createElement('p');
+    starIcon.innerHTML='&#9734';
     starIcon.classList.add('star-icon');
+    // star-icon ended
 
     restaurantRatingContainer.appendChild(restaurantRating);
     restaurantRatingContainer.appendChild(starIcon);
 
-
+    // cuisine started
     const cuisine = document.createElement('p');
+    cuisine.textContent=item.cuisine;
     cuisine.classList.add('cuisine');
-    const price = document.createElement('p');
+    // cuisine started ended
+
+    
+    const price = document.createElement('div');
     price.classList.add('price');
     
     cuisinePrice.appendChild(cuisine);
     cuisinePrice.appendChild(price);
     
+    // price started 
     const priceForOne = document.createElement('p');
+    priceForOne.textContent=item.price;
     priceForOne.classList.add('price-for-one');
+    // price ended
     
     price.appendChild(priceForOne);
 
+    // delivery time started
     const deliveryTime  = document.createElement('b');
+    deliveryTime.textContent=item.delieveryTime;
     deliveryTime.classList.add('delivery-time');
+    // delivery time started
 
     time.appendChild(deliveryTime);
-
+    
+    
+    // deliveryRestaurantsHeaderCityName.innerHTML
     
     // const menuItem = document.createElement('div');
     // menuItem.innerHTML += `<div class="deliveryRestaurants-card">
@@ -118,7 +168,8 @@ const displayMenu = () => {
 
  displayMenu();
 
-console.log("testing")
+console.log("testing");
+console.log(window.location.href);
 
 
 /*
