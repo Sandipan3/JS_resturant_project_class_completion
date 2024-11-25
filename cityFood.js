@@ -1,7 +1,29 @@
 import {deliveryRestaurants} from "./restaurantMenuData.js";
+
+
+const currentLocation = window.location.href;
+const currentURL = new URL(currentLocation);
+// console.log(currentURL);
+const params = new URLSearchParams(currentURL.search);
+// values after question mark
+const city = params.get('city').charAt(0).toUpperCase() + params.get('city').slice(1);
+
+// console.log(currentURL.search);
+// console.log(params);
+console.log(city);
+
+const CITY_NAME = document.querySelector('.deliveryRestaurants-Header-city-name');
+CITY_NAME.textContent=city;
+
+document.querySelector('.city-name').textContent=city;
+
+document.querySelector('.city-name-in-breadcrumb').textContent=city;
+
+
 const deliveryRestaurantsContainerEl = document.querySelector(
   ".deliveryRestaurants-container"
 );
+
 
 const displayMenu = () => {
   deliveryRestaurants.forEach((item) => {
@@ -14,9 +36,13 @@ const displayMenu = () => {
     discountContainer.classList.add('discount-container');
 
     const foodImage = document.createElement('img');
+    foodImage.src=item.img;
+    foodImage.alt=item.restaurantName;
     foodImage.classList.add('foodImage');
+    //image added
 
     const deliveryRestaurantsDetails = document.createElement('div');
+  
     deliveryRestaurantsDetails.classList.add('deliveryRestaurants-details');
 
     console.log('deliveryRestaurantsCard', deliveryRestaurantsCard);
@@ -28,9 +54,9 @@ const displayMenu = () => {
     
 
     const discountPercentage = document.createElement('p');
-    
+    discountPercentage.textContent=item.discount;
     discountPercentage.classList.add('discount-percentage');
-
+    // discount added
     discountContainer.appendChild(discountPercentage);
 
 
@@ -47,8 +73,11 @@ const displayMenu = () => {
     deliveryRestaurantsDetails.appendChild(cuisinePrice);
     deliveryRestaurantsDetails.appendChild(time);
 
+    // restaurant name start
     const restaurantName = document.createElement('b');
+    restaurantName.textContent=item.restaurantName;
     restaurantName.classList.add('restaurant-name');
+    // restaurant name ended
 
     const restaurantRatingContainer = document.createElement('div')
     restaurantRatingContainer.classList.add('restaurant-rating-container');
@@ -56,35 +85,52 @@ const displayMenu = () => {
     deliveryRestaurantName.appendChild(restaurantName);
     deliveryRestaurantName.appendChild(restaurantRatingContainer);
 
-
-    const restaurantRating = document.createElement('b')
+    //"restaurant rating started 
+    const restaurantRating = document.createElement('b');
+    restaurantRating.textContent=item.rating;
     restaurantRating.classList.add('restaurant-rating');
-
+    //"restaurant rating ended
+    
+    // star-icon started
     const starIcon = document.createElement('p');
+    starIcon.innerHTML='&#9734';
     starIcon.classList.add('star-icon');
+    // star-icon ended
 
     restaurantRatingContainer.appendChild(restaurantRating);
     restaurantRatingContainer.appendChild(starIcon);
 
-
+    // cuisine started
     const cuisine = document.createElement('p');
+    cuisine.textContent=item.cuisine;
     cuisine.classList.add('cuisine');
-    const price = document.createElement('p');
+    // cuisine started ended
+
+    
+    const price = document.createElement('div');
     price.classList.add('price');
     
     cuisinePrice.appendChild(cuisine);
     cuisinePrice.appendChild(price);
     
+    // price started 
     const priceForOne = document.createElement('p');
+    priceForOne.textContent=item.price;
     priceForOne.classList.add('price-for-one');
+    // price ended
     
     price.appendChild(priceForOne);
 
+    // delivery time started
     const deliveryTime  = document.createElement('b');
+    deliveryTime.textContent=item.delieveryTime;
     deliveryTime.classList.add('delivery-time');
+    // delivery time started
 
     time.appendChild(deliveryTime);
-
+    
+    
+    // deliveryRestaurantsHeaderCityName.innerHTML
     
     // const menuItem = document.createElement('div');
     // menuItem.innerHTML += `<div class="deliveryRestaurants-card">
@@ -118,7 +164,8 @@ const displayMenu = () => {
 
  displayMenu();
 
-console.log("testing")
+console.log("testing");
+console.log(window.location.href);
 
 
 /*
@@ -164,3 +211,46 @@ const displayMenu = () => {
 
 displayMenu();
 */
+
+//search functionality
+
+const displaySearchResultsHandler =  () => {
+
+
+  const searchInput = document.querySelector('.search-input').value.toLowerCase();
+  const searchDishContainer = document.querySelector('.search-dish-container');
+
+  const requiredRestaurants = deliveryRestaurants.filter((item) =>{
+    return item.restaurantName.toLowerCase().includes(searchInput) ;
+    //|| item.cuisine.toLowerCase().includes(searchInput);
+  })
+  searchDishContainer.style.display='block';
+  searchDishContainer.innerHTML='';
+
+  if (requiredRestaurants.length > 0 ){
+    requiredRestaurants.forEach((item) => {
+     searchDishContainer.innerHTML += 
+                        `<div class="search-restaurant-container-img-details">
+                            <img src="${item.img}" alt="${item.food}" class="search-restaurant-img">
+                            <div class="search-restaurant-container-details">
+                                <p class="search-restaurant-heading">${item.restaurantName}</p>
+                                <div class="search-restaurant-rating-container">
+                                    <b class="search-restaurant-rating">${item.rating}</b>
+                                    <p class="search-star-icon" style="margin: 0px 0px 3px 2px;">☆</p>
+                                </div>
+                                <div class="search-restaurant-order-now">
+                                    <p class="order-now">Order now</p>
+                                    <img src="./assets/icons/red-right-arrow.png" alt="" style="width: 1.1rem;">
+                                </div>
+                                <p class="search-restaurant-deliverytime">Delivery in ${item.delieveryTime} mins</p>
+                              </div>
+                        </div>`;
+    })
+  }
+  else{
+    searchDishContainer.innerHTML=`<p>No results found!</p>`
+  }
+
+}
+
+document.querySelector('.search-input').addEventListener('input', displaySearchResultsHandler);
