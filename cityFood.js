@@ -20,10 +20,6 @@ document.querySelector('.city-name').textContent=city;
 document.querySelector('.city-name-in-breadcrumb').textContent=city;
 
 
-
-
-
-
 const deliveryRestaurantsContainerEl = document.querySelector(
   ".deliveryRestaurants-container"
 );
@@ -215,3 +211,46 @@ const displayMenu = () => {
 
 displayMenu();
 */
+
+//search functionality
+
+const displaySearchResultsHandler =  () => {
+
+
+  const searchInput = document.querySelector('.search-input').value.toLowerCase();
+  const searchDishContainer = document.querySelector('.search-dish-container');
+
+  const requiredRestaurants = deliveryRestaurants.filter((item) =>{
+    return item.restaurantName.toLowerCase().includes(searchInput) ;
+    //|| item.cuisine.toLowerCase().includes(searchInput);
+  })
+  searchDishContainer.style.display='block';
+  searchDishContainer.innerHTML='';
+
+  if (requiredRestaurants.length > 0 ){
+    requiredRestaurants.forEach((item) => {
+     searchDishContainer.innerHTML += 
+                        `<div class="search-restaurant-container-img-details">
+                            <img src="${item.img}" alt="${item.food}" class="search-restaurant-img">
+                            <div class="search-restaurant-container-details">
+                                <p class="search-restaurant-heading">${item.restaurantName}</p>
+                                <div class="search-restaurant-rating-container">
+                                    <b class="search-restaurant-rating">${item.rating}</b>
+                                    <p class="search-star-icon" style="margin: 0px 0px 3px 2px;">☆</p>
+                                </div>
+                                <div class="search-restaurant-order-now">
+                                    <p class="order-now">Order now</p>
+                                    <img src="./assets/icons/red-right-arrow.png" alt="" style="width: 1.1rem;">
+                                </div>
+                                <p class="search-restaurant-deliverytime">Delivery in ${item.delieveryTime} mins</p>
+                              </div>
+                        </div>`;
+    })
+  }
+  else{
+    searchDishContainer.innerHTML=`<p>No results found!</p>`
+  }
+
+}
+
+document.querySelector('.search-input').addEventListener('input', displaySearchResultsHandler);
