@@ -255,6 +255,42 @@ const displaySearchResultsHandler =  () => {
 
 document.querySelector('.search-input').addEventListener('input', displaySearchResultsHandler);
 
+// search functionality fo bg screens
+
+// var searchInput = document.querySelector('.search-input');
+var searchDishContainer = document.querySelector('.search-dish-container');
+
+function searchInputFunction(searchInputValue) {
+
+  searchDishContainer.innerHTML = '';
+  var searchedRestaurants = deliveryRestaurants.filter((item) =>
+      (item.restaurantName.toLowerCase().includes(searchInputValue.toLowerCase()) ||
+          item.cuisine.toLowerCase().includes(searchInputValue.toLowerCase())) &&
+      searchInputValue.length > 0)
+
+  if (searchedRestaurants.length == 0 && searchInputValue.length != 0) {
+      searchDishContainer.style.display = 'block';
+      searchDishContainer.style.overflowY = 'hidden'
+      searchDishContainer.style.color = 'rgb(156, 156, 156)';
+      searchDishContainer.style.padding = '1.3rem 1rem';
+      searchDishContainer.innerHTML = 'Oops! <br><p style="font-size:0.8rem; margin-top:0.2rem">We could not understand what you mean,try rephrasing the query.</p>'
+      searchDishContainer.style.height = 'auto';
+
+  }
+  else {
+      searchedRestaurants.forEach((item, idx) => {
+          searchDishContainer.style.display = 'block';
+          searchDishContainer.style.height = '88vh';
+          searchDishContainer.style.backgroundColor = 'white';
+          displayRestaurantOnSearch(item, idx);
+      });
+
+      if (searchInputValue.length === 0) {
+          searchDishContainer.style.display = 'none';
+      }
+  }
+}
+
 // voice search
 const microphoneContainerEl = document.querySelector('.microphone-container');
 microphoneContainerEl.addEventListener('click' , () => {
@@ -266,7 +302,7 @@ microphoneContainerEl.addEventListener('click' , () => {
   speechRecognition.lang = 'en-US';
   let timeoutId;
 
-  speechRecognition.onResult = function (event){
+  speechRecognition.onresult = function (event){
   const transcript = event.results[0][0].transcript;
   let voiceInputValue = document.querySelector('.search-input').value = transcript;
   
@@ -276,7 +312,7 @@ microphoneContainerEl.addEventListener('click' , () => {
 
   }
 
-  speechRecognition.onError = function (event){
+  speechRecognition.onerror = function (event){
     console.error('Speech Recognition Error', event.error);
     
     // todo - for fiteration purpose pass voiceinputvalue in SearchInput function
