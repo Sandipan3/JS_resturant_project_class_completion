@@ -30,3 +30,20 @@ To do
 Filter
 Search 
 getLocation
+
+
+
+microphone configuration in cityFood.js 
+=======================================
+1. select microphone container and create node
+2. click eventlistener
+3. 
+if condition => check if browser supports voice search through JAvascript window api
+language Set
+SetTimeout
+
+
+start
+
+
+  filtarion on menu data

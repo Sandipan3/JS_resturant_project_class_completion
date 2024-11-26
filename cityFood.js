@@ -254,3 +254,55 @@ const displaySearchResultsHandler =  () => {
 }
 
 document.querySelector('.search-input').addEventListener('input', displaySearchResultsHandler);
+
+// voice search
+const microphoneContainerEl = document.querySelector('.microphone-container');
+microphoneContainerEl.addEventListener('click' , () => {
+  // const speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+ console.log('micro-test');
+// console.log(speechRecognition);
+ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window){
+  const speechRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  speechRecognition.lang = 'en-US';
+  let timeoutId;
+
+  speechRecognition.onResult = function (event){
+  const transcript = event.results[0][0].transcript;
+  let voiceInputValue = document.querySelector('.search-input').value = transcript;
+  
+  // todo - for fiteration purpose pass voiceinputvalue in SearchInput function
+  console.log(voiceInputValue);
+  restartRecognition();
+
+  }
+
+  speechRecognition.onError = function (event){
+    console.error('Speech Recognition Error', event.error);
+    
+    // todo - for fiteration purpose pass voiceinputvalue in SearchInput function
+    restartRecognition();
+    }
+
+speechRecognition.start();
+document.querySelector('.search-input').value  = "Listening...!"
+
+timeoutId = setTimeout(() => {
+  speechRecognition.stop();
+  document.querySelector('.search-input').value  = "Try Again...!"
+
+}, 4000);
+
+function restartRecognition(){
+  clearTimeout(timeoutId);
+  speechRecognition.stop();
+}
+
+  console.log('true');
+  
+ }else{
+  console.log('false');
+  
+ }
+ 
+})
+
