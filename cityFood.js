@@ -1,4 +1,4 @@
-import {deliveryRestaurants} from "./restaurantMenuData.js";
+import { deliveryRestaurants } from "./restaurantMenuData.js";
 
 
 const currentLocation = window.location.href;
@@ -6,18 +6,20 @@ const currentURL = new URL(currentLocation);
 // console.log(currentURL);
 const params = new URLSearchParams(currentURL.search);
 // values after question mark
-const city = params.get('city').charAt(0).toUpperCase() + params.get('city').slice(1);
+
+const CITY_URL_PARAMETER = params.get('city');
+const city = CITY_URL_PARAMETER.charAt(0).toUpperCase() + CITY_URL_PARAMETER.slice(1);
 
 // console.log(currentURL.search);
 // console.log(params);
 console.log(city);
 
 const CITY_NAME = document.querySelector('.deliveryRestaurants-Header-city-name');
-CITY_NAME.textContent=city;
+CITY_NAME.textContent = city;
 
-document.querySelector('.city-name').textContent=city;
+document.querySelector('.city-name').textContent = city;
 
-document.querySelector('.city-name-in-breadcrumb').textContent=city;
+document.querySelector('.city-name-in-breadcrumb').textContent = city;
 
 
 const deliveryRestaurantsContainerEl = document.querySelector(
@@ -28,33 +30,33 @@ const deliveryRestaurantsContainerEl = document.querySelector(
 const displayMenu = () => {
   deliveryRestaurants.forEach((item) => {
     const deliveryRestaurantsCard = document.createElement('div');
-    
+
     deliveryRestaurantsCard.classList.add('deliveryRestaurants-card');
 
     const discountContainer = document.createElement('div');
-    
+
     discountContainer.classList.add('discount-container');
 
     const foodImage = document.createElement('img');
-    foodImage.src=item.img;
-    foodImage.alt=item.restaurantName;
+    foodImage.src = item.img;
+    foodImage.alt = item.restaurantName;
     foodImage.classList.add('foodImage');
     //image added
 
     const deliveryRestaurantsDetails = document.createElement('div');
-  
+
     deliveryRestaurantsDetails.classList.add('deliveryRestaurants-details');
 
     console.log('deliveryRestaurantsCard', deliveryRestaurantsCard);
     console.log('discountContainer', discountContainer);
-    
+
     deliveryRestaurantsCard.appendChild(discountContainer);
     deliveryRestaurantsCard.appendChild(foodImage);
     deliveryRestaurantsCard.appendChild(deliveryRestaurantsDetails);
-    
+
 
     const discountPercentage = document.createElement('p');
-    discountPercentage.textContent=item.discount;
+    discountPercentage.textContent = item.discount;
     discountPercentage.classList.add('discount-percentage');
     // discount added
     discountContainer.appendChild(discountPercentage);
@@ -75,7 +77,7 @@ const displayMenu = () => {
 
     // restaurant name start
     const restaurantName = document.createElement('b');
-    restaurantName.textContent=item.restaurantName;
+    restaurantName.textContent = item.restaurantName;
     restaurantName.classList.add('restaurant-name');
     // restaurant name ended
 
@@ -87,13 +89,13 @@ const displayMenu = () => {
 
     //"restaurant rating started 
     const restaurantRating = document.createElement('b');
-    restaurantRating.textContent=item.rating;
+    restaurantRating.textContent = item.rating;
     restaurantRating.classList.add('restaurant-rating');
     //"restaurant rating ended
-    
+
     // star-icon started
     const starIcon = document.createElement('p');
-    starIcon.innerHTML='&#9734';
+    starIcon.innerHTML = '&#9734';
     starIcon.classList.add('star-icon');
     // star-icon ended
 
@@ -102,36 +104,36 @@ const displayMenu = () => {
 
     // cuisine started
     const cuisine = document.createElement('p');
-    cuisine.textContent=item.cuisine;
+    cuisine.textContent = item.cuisine;
     cuisine.classList.add('cuisine');
     // cuisine started ended
 
-    
+
     const price = document.createElement('div');
     price.classList.add('price');
-    
+
     cuisinePrice.appendChild(cuisine);
     cuisinePrice.appendChild(price);
-    
+
     // price started 
     const priceForOne = document.createElement('p');
-    priceForOne.textContent=item.price;
+    priceForOne.textContent = item.price;
     priceForOne.classList.add('price-for-one');
     // price ended
-    
+
     price.appendChild(priceForOne);
 
     // delivery time started
-    const deliveryTime  = document.createElement('b');
-    deliveryTime.textContent=item.delieveryTime;
+    const deliveryTime = document.createElement('b');
+    deliveryTime.textContent = item.delieveryTime;
     deliveryTime.classList.add('delivery-time');
     // delivery time started
 
     time.appendChild(deliveryTime);
-    
-    
+
+
     // deliveryRestaurantsHeaderCityName.innerHTML
-    
+
     // const menuItem = document.createElement('div');
     // menuItem.innerHTML += `<div class="deliveryRestaurants-card">
     //             <div class="discount-container">
@@ -159,10 +161,17 @@ const displayMenu = () => {
     //         </div>`;
 
     deliveryRestaurantsContainerEl.appendChild(deliveryRestaurantsCard);
+
+    const restaurantNameFormatted = item.restaurantName.replace(' ', '-').toLowerCase();
+
+    deliveryRestaurantsCard.addEventListener('click', () => {
+      localStorage.setItem('selectedRestaurant', JSON.stringify(item))
+      const location_restaurant = window.location.href = `restrauntdetail.html?city=${CITY_URL_PARAMETER}&restaurant=${encodeURIComponent(restaurantNameFormatted)}`
+    });
   });
 };
 
- displayMenu();
+displayMenu();
 
 console.log("testing");
 console.log(window.location.href);
@@ -214,23 +223,23 @@ displayMenu();
 
 //search functionality
 
-const displaySearchResultsHandler =  () => {
+const displaySearchResultsHandler = () => {
 
 
   const searchInput = document.querySelector('.search-input').value.toLowerCase();
   const searchDishContainer = document.querySelector('.search-dish-container');
 
-  const requiredRestaurants = deliveryRestaurants.filter((item) =>{
-    return item.restaurantName.toLowerCase().includes(searchInput) ;
+  const requiredRestaurants = deliveryRestaurants.filter((item) => {
+    return item.restaurantName.toLowerCase().includes(searchInput);
     //|| item.cuisine.toLowerCase().includes(searchInput);
   })
-  searchDishContainer.style.display='block';
-  searchDishContainer.innerHTML='';
+  searchDishContainer.style.display = 'block';
+  searchDishContainer.innerHTML = '';
 
-  if (requiredRestaurants.length > 0 ){
+  if (requiredRestaurants.length > 0) {
     requiredRestaurants.forEach((item) => {
-     searchDishContainer.innerHTML += 
-                        `<div class="search-restaurant-container-img-details">
+      searchDishContainer.innerHTML +=
+        `<div class="search-restaurant-container-img-details">
                             <img src="${item.img}" alt="${item.food}" class="search-restaurant-img">
                             <div class="search-restaurant-container-details">
                                 <p class="search-restaurant-heading">${item.restaurantName}</p>
@@ -247,98 +256,62 @@ const displaySearchResultsHandler =  () => {
                         </div>`;
     })
   }
-  else{
-    searchDishContainer.innerHTML=`<p>No results found!</p>`
+  else {
+    searchDishContainer.innerHTML = `<p>No results found!</p>`
   }
 
 }
 
 document.querySelector('.search-input').addEventListener('input', displaySearchResultsHandler);
 
-// search functionality fo bg screens
-
-// var searchInput = document.querySelector('.search-input');
-var searchDishContainer = document.querySelector('.search-dish-container');
-
-function searchInputFunction(searchInputValue) {
-
-  searchDishContainer.innerHTML = '';
-  var searchedRestaurants = deliveryRestaurants.filter((item) =>
-      (item.restaurantName.toLowerCase().includes(searchInputValue.toLowerCase()) ||
-          item.cuisine.toLowerCase().includes(searchInputValue.toLowerCase())) &&
-      searchInputValue.length > 0)
-
-  if (searchedRestaurants.length == 0 && searchInputValue.length != 0) {
-      searchDishContainer.style.display = 'block';
-      searchDishContainer.style.overflowY = 'hidden'
-      searchDishContainer.style.color = 'rgb(156, 156, 156)';
-      searchDishContainer.style.padding = '1.3rem 1rem';
-      searchDishContainer.innerHTML = 'Oops! <br><p style="font-size:0.8rem; margin-top:0.2rem">We could not understand what you mean,try rephrasing the query.</p>'
-      searchDishContainer.style.height = 'auto';
-
-  }
-  else {
-      searchedRestaurants.forEach((item, idx) => {
-          searchDishContainer.style.display = 'block';
-          searchDishContainer.style.height = '88vh';
-          searchDishContainer.style.backgroundColor = 'white';
-          displayRestaurantOnSearch(item, idx);
-      });
-
-      if (searchInputValue.length === 0) {
-          searchDishContainer.style.display = 'none';
-      }
-  }
-}
-
 // voice search
 const microphoneContainerEl = document.querySelector('.microphone-container');
-microphoneContainerEl.addEventListener('click' , () => {
+microphoneContainerEl.addEventListener('click', () => {
   // const speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
- console.log('micro-test');
-// console.log(speechRecognition);
- if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window){
-  const speechRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  speechRecognition.lang = 'en-US';
-  let timeoutId;
+  console.log('micro-test');
+  // console.log(speechRecognition);
+  if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    const speechRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    speechRecognition.lang = 'en-US';
+    let timeoutId;
 
-  speechRecognition.onresult = function (event){
-  const transcript = event.results[0][0].transcript;
-  let voiceInputValue = document.querySelector('.search-input').value = transcript;
-  
-  // todo - for fiteration purpose pass voiceinputvalue in SearchInput function
-  console.log(voiceInputValue);
-  restartRecognition();
+    speechRecognition.onresult = function (event) {
+      const transcript = event.results[0][0].transcript;
+      let voiceInputValue = document.querySelector('.search-input').value = transcript;
+
+      // todo - for fiteration purpose pass voiceinputvalue in SearchInput function
+      console.log(voiceInputValue);
+      restartRecognition();
+
+    }
+
+    speechRecognition.onerror = function (event) {
+      console.error('Speech Recognition Error', event.error);
+
+      // todo - for fiteration purpose pass voiceinputvalue in SearchInput function
+      restartRecognition();
+    }
+
+    speechRecognition.start();
+    document.querySelector('.search-input').value = "Listening...!"
+
+    timeoutId = setTimeout(() => {
+      speechRecognition.stop();
+      document.querySelector('.search-input').value = "Try Again...!"
+
+    }, 4000);
+
+    function restartRecognition() {
+      clearTimeout(timeoutId);
+      speechRecognition.stop();
+    }
+
+    console.log('true');
+
+  } else {
+    console.log('false');
 
   }
 
-  speechRecognition.onerror = function (event){
-    console.error('Speech Recognition Error', event.error);
-    
-    // todo - for fiteration purpose pass voiceinputvalue in SearchInput function
-    restartRecognition();
-    }
-
-speechRecognition.start();
-document.querySelector('.search-input').value  = "Listening...!"
-
-timeoutId = setTimeout(() => {
-  speechRecognition.stop();
-  document.querySelector('.search-input').value  = "Try Again...!"
-
-}, 4000);
-
-function restartRecognition(){
-  clearTimeout(timeoutId);
-  speechRecognition.stop();
-}
-
-  console.log('true');
-  
- }else{
-  console.log('false');
-  
- }
- 
 })
 
